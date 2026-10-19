@@ -1,0 +1,57 @@
+@model List<Doctor>
+@{
+    ViewData["Title"] = "Doctors";
+    string? name = ViewBag.PatientName;
+    string selected = ViewBag.Selected;
+    List<string> specs = ViewBag.Specializations;
+}
+
+<h2>Doctors</h2>
+
+@if (!string.IsNullOrEmpty(name))
+{
+    <p>Welcome, @name</p>
+}
+
+<form method="post" asp-action="SetName">
+    Patient Name: <input type="text" name="patientName" value="@name" />
+    <button type="submit">Save</button>
+</form>
+<br />
+
+<form method="get" asp-action="Index">
+    Specialization:
+    <select name="specialization">
+        <option value="">All</option>
+        @foreach (var s in specs)
+        {
+            <option value="@s" selected="@(s == selected)">@s</option>
+        }
+    </select>
+    <button type="submit">Filter</button>
+</form>
+<br />
+
+<table border="1" cellpadding="5">
+    <tr>
+        <th>Id</th>
+        <th>Name</th>
+        <th>Specialization</th>
+        <th>Experience (yrs)</th>
+        <th>Fee</th>
+        <th>Total Charge</th>
+        <th></th>
+    </tr>
+    @foreach (var d in Model)
+    {
+        <tr>
+            <td>@d.DoctorId</td>
+            <td>@d.DoctorName</td>
+            <td>@d.Specialization</td>
+            <td>@d.Experience</td>
+            <td>₹@d.ConsultationFee</td>
+            <td>₹@d.CalculateTotalCharge()</td>
+            <td><a asp-action="Details" asp-route-id="@d.DoctorId">Details</a></td>
+        </tr>
+    }
+</table>

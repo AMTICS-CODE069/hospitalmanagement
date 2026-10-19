@@ -1,0 +1,22 @@
+@model Doctor
+@{
+    ViewData["Title"] = "Doctor Details";
+}
+
+<h2>Doctor Details</h2>
+
+<p>Id: @Model.DoctorId</p>
+<p>Name: @Model.DoctorName</p>
+<p>Specialization: @Model.Specialization</p>
+<p>Experience: @Model.Experience years</p>
+<p>Consultation Fee: ₹@Model.ConsultationFee</p>
+<p>Total Charge (with ₹100 service charge): ₹@Model.CalculateTotalCharge()</p>
+<p>Page generated at: @DateTime.Now.ToString("HH:mm:ss")</p>
+
+<form method="post" asp-controller="Appointment" asp-action="Book" asp-antiforgery="false">
+    <input type="hidden" name="doctorId" value="@Model.DoctorId" />
+    Date: <input type="date" name="appointmentDate" required />
+    <button type="submit">Request Appointment</button>
+</form>
+<br />
+<a asp-action="Index">Back</a>
